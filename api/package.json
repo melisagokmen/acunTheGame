@@ -1,0 +1,12 @@
+{
+  "name": "first-express-app",
+  "description": "an example of using Express",
+  "private": true,
+  "version": "0.0.1",
+  "dependencies": {
+    "axios": "^0.19.0",
+    "cors": "^2.8.5",
+    "express": "^3.21.2"
+  },
+  "main": "quote"
+}
