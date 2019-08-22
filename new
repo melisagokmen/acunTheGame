@@ -1,0 +1,246 @@
+<template>
+  <div>
+    <h1>Acun The Game</h1>
+    <br/>
+    <div>
+    <p class="box"></p>
+    <p class="remaining"></p>
+    <p class="offer"></p>
+    </div>
+
+    <div class="grid-container">
+
+      <div class="kutular"></div>
+    <button @click="openBox(boxes)" id="a1" >1</button>
+    <button @click="openBox(boxes)" id="a2" >2</button>
+    <button @click="openBox(boxes)" id="a3" >3</button>
+    <button @click="openBox(boxes)" id="a4" >4</button>
+    <button @click="openBox(boxes)" id="a5" >5</button><br>
+    <button @click="openBox(boxes)" id="a6" >6</button>
+    
+    <button @click="openBox(boxes)" id="a7" >7</button>
+    <button @click="openBox(boxes)" id="a8" >8</button>
+    <button @click="openBox(boxes)" id="a9" >9</button>
+    <button @click="openBox(boxes)" id="a10" >10</button><br>
+    <button @click="openBox(boxes)" id="a11" >11</button>
+    <button @click="openBox(boxes)" id="a12" >12</button>
+  
+    <button @click="openBox(boxes)" id="a13">13</button>
+    <button @click="openBox(boxes)" id="a14">14</button>
+    <button @click="openBox(boxes)" id="a15">15</button><br>
+    <button @click="openBox(boxes)" id="a16">16</button>
+    <button @click="openBox(boxes)" id="a17">17</button>
+    <button @click="openBox(boxes)" id="a18">18</button>
+    <button @click="openBox(boxes)" id="a19">19</button>
+    <button @click="openBox(boxes)" id="a20">20</button><br>
+    <button @click="openBox(boxes)" id="a21">21</button>
+    <button @click="openBox(boxes)" id="a22">22</button>
+    <button @click="openBox(boxes)" id="a23">23</button>
+    <button @click="openBox(boxes)" id="a24">24</button>
+    </div>
+    </div>
+  
+  
+  
+</template>
+<script>
+import axios from "axios";
+
+export default {
+  data() {
+    return {
+      boxes: [],
+      counter: 1,
+    };
+  },
+  methods: {
+    buildList(boxes) {
+      var html = "<div class='grid-container'>"
+      for(let i=0; i<boxes.length; i++){
+        if(i==0){
+          html += "<div class='low'>"
+        }
+        if(i==13){
+          html +=  "</div>" + "<div class='med'>"
+        }
+        if(i==18){
+          html +=  "</div>" + "<div class='high'>"
+        }
+      html +=  (boxes[i].worth) + "₺"  + "<br>"
+      }
+      html += "</div>" + "</div>"
+      return html
+    },
+
+    drawBoxes () {
+      document.querySelector('.remaining').innerHTML = '<br>' + 'remaining boxes: 24' + '<br>';
+      document.querySelector('.boxes').innerHTML = this.buildList(this.boxes);
+  },
+
+    openBox(boxes) {
+      var random = Math.floor(Math.random() * boxes.length);
+
+      if(boxes.length == 1){
+        document.querySelector('.remaining').innerHTML = 'out of box!';
+        alert('You just won '+ boxes[0].worth + ' !')
+      return;
+      }
+
+      document.querySelector('.remaining').innerHTML = "opened box's worth: " +  (boxes[random].worth) + "₺" + "<br>" + 'remaining boxes: ' + (24-this.counter);
+      
+      this.counter++;
+      boxes.splice(random,1);
+      document.querySelector('.boxes').innerHTML = this.buildList(boxes);
+
+      if(this.counter==6 || this.counter==11 || this.counter==16 || this.counter==20 || this.counter==23){
+        this.hamdiBey(boxes);
+      }
+      else{
+        document.querySelector('.offer').innerHTML = " ";
+      }
+    },
+
+
+  hamdiBey(boxes) {
+      var potential = 0;
+      var maxWorth = 0;
+      var offer = 0;
+      var i = 0;
+      for( i=0 ;i<boxes.length;i++){
+        potential += boxes[i].worth;
+        if(boxes[i].worth>maxWorth){
+          maxWorth = boxes[i].worth;
+        }
+      }
+      offer = ((maxWorth/(i+3))+(potential/100+i));
+      offer = offer/100
+      offer = parseInt(offer)
+      alert("Hamdi Bey Teklif yapıyor!")
+      document.querySelector('.offer').innerHTML = "Hamdi Bey's offer: " + parseInt(offer*100) + "₺"
+  }
+
+  },
+  mounted() {
+    axios.get("http://localhost:3400/").then(response => {
+      this.boxes = response.data;
+      this.drawBoxes();
+    });
+  }
+}
+</script>
+
+<style>
+
+.low, .med, .high {
+  border: solid black;
+  width: 150px;
+}
+
+.low {
+  background-color: rgba(35, 226, 226, 0.925);
+  grid-area: header; 
+}
+.med {
+  background-color: rgba(214, 214, 52, 0.877);
+  grid-area: menu;
+}
+.high {
+  background-color: #ca1c1c;
+  grid-area: right;
+}
+
+
+.grid-container {
+  display: grid;
+  grid-template-areas:
+    'a1 a2 a3 a4 a5 a6'
+    'b1 b2 b3 b4 b5 b6'
+    'c1 c2 c3 c4 c5 c6'
+    'd1 d2 d3 d4 d5 d6'
+    ;
+  grid-gap: 10px;
+  padding: 10px;
+}
+.grid-container > div {
+  text-align: center;
+  padding: 20px 0;
+  font-size: 30px;
+}
+.boxes{
+  text-align: center;
+  margin-top: 0px;
+}
+
+#a1{
+  grid-area: a1;
+}
+#a2{
+grid-area: a2;
+}
+#a3{
+  grid-area: a3;
+}
+#a4{
+  grid-area: a4;
+}
+#a5{
+  grid-area: a5;
+}
+#a6{
+  grid-area: a6;
+}
+#a7{
+  grid-area: b1;
+}
+#a8{
+grid-area: b2;
+}
+#a9{
+  grid-area: b3;
+}
+#a10{
+  grid-area: b4;
+}
+#a11{
+  grid-area: b5;
+}
+#a12{
+  grid-area: b6;
+}
+#a13{
+  grid-area: c1;
+}
+#a14{
+grid-area: c2;
+}
+#a15{
+  grid-area: c3;
+}
+#a16{
+  grid-area: c4;
+}
+#a17{
+  grid-area: c5;
+}
+#a18{
+  grid-area: c6;
+}
+#a19{
+  grid-area: d1;
+}
+#a20{
+grid-area: d2;
+}
+#a21{
+  grid-area: d3;
+}
+#a22{
+  grid-area: d4;
+}
+#a23{
+  grid-area: d5;
+}
+#a24{
+  grid-area: d6;
+}
+</style>
