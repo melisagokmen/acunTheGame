@@ -1,0 +1,251 @@
+<template>
+  <div>
+    <h1>Acun The Game</h1>
+    <br/>
+    <div>
+    <p class="box"></p>
+    <p class="remaining"></p>
+    <p class="offer"></p>
+    <button v-show="hamdi" @click="onAccept()">kabul et</button><button v-show="hamdi" @click="onReject()">reddet</button>
+    
+     <div class="grid-container">
+
+       <div class="low">
+         <div class="money1"></div>
+
+       </div>
+
+      <div class="kutular">
+    <button @click="openBox(boxes,'box_a1')" v-if="box_a1" id="a1" > 1</button>
+   <button @click="openBox(boxes,'box_a2')" v-if="box_a2" id="a2" > 2</button>
+   <button @click="openBox(boxes,'box_a3')" v-if="box_a3" id="a3" > 3</button>
+   <button @click="openBox(boxes,'box_a4')" v-if="box_a4" id="a4" > 4</button>
+   <button @click="openBox(boxes,'box_a5')" v-if="box_a5" id="a5" > 5</button><br>
+   <button @click="openBox(boxes,'box_a6')" v-if="box_a6" id="a6" > 6</button>
+   <button @click="openBox(boxes,'box_a7')" v-if="box_a7" id="a7" > 7</button>
+   <button @click="openBox(boxes,'box_a8')" v-if="box_a8" id="a8" > 8</button>
+   <button @click="openBox(boxes,'box_a9')" v-if="box_a9" id="a9" > 9</button>
+   <button @click="openBox(boxes,'box_a10')" v-if="box_a10" id="a10" > 10</button><br>
+   <button @click="openBox(boxes,'box_a11')" v-if="box_a11" id="a11" > 11</button>
+   <button @click="openBox(boxes,'box_a12')" v-if="box_a12" id="a12" > 12</button>
+   <button @click="openBox(boxes,'box_a13')" v-if="box_a13" id="a13" > 13</button>
+   <button @click="openBox(boxes,'box_a14')" v-if="box_a14" id="a14" > 14</button>
+   <button @click="openBox(boxes,'box_a15')" v-if="box_a15" id="a15" > 15</button><br>
+   <button @click="openBox(boxes,'box_a16')" v-if="box_a16" id="a16" > 16</button>
+   <button @click="openBox(boxes,'box_a17')" v-if="box_a17" id="a17" > 17</button>
+   <button @click="openBox(boxes,'box_a18')" v-if="box_a18" id="a18" > 18</button>
+   <button @click="openBox(boxes,'box_a19')" v-if="box_a19" id="a19" > 19</button>
+   <button @click="openBox(boxes,'box_a20')" v-if="box_a20" id="a20" > 20</button><br>
+   <button @click="openBox(boxes,'box_a21')" v-if="box_a21" id="a21" > 21</button>
+   <button @click="openBox(boxes,'box_a22')" v-if="box_a22" id="a22" > 22</button>
+   <button @click="openBox(boxes,'box_a23')" v-if="box_a23" id="a23" > 23</button>
+   <button @click="openBox(boxes,'box_a24')" v-if="box_a24" id="a24" > 24</button>
+    </div>
+    <div class="med">
+      <div class="money2"></div>
+    </div>
+
+    <div class="high">
+      <div class="money3"></div>
+    </div>
+
+    </div>
+    </div>
+  </div>
+</template>
+<script>
+
+import axios from "axios";
+
+export default {
+  data() {
+    return {
+      box_a1:true,
+      box_a2:true,
+      box_a3:true,
+      box_a4:true,
+      box_a5:true,
+      box_a6:true,
+      box_a7:true,
+      box_a8:true,
+      box_a9:true,
+      box_a10:true,
+      box_a11:true,
+      box_a12:true,
+      box_a13:true,
+      box_a14:true,
+      box_a15:true,
+      box_a16:true,
+      box_a17:true,
+      box_a18:true,
+      box_a19:true,
+      box_a20:true,
+      box_a21:true,
+      box_a22:true,
+      box_a23:true,
+      box_a24:true,
+
+      boxes: [],
+      counter: 1,
+      hamdi: false,
+    };
+  },
+  methods: {
+
+    buildList(boxes) {
+      this.buildList1(this.boxes)
+      this.buildList2(this.boxes)
+      this.buildList3(this.boxes)
+    },
+
+    buildList1(boxes) {
+      var html = ""
+      for(let i=0; i<13; i++){
+      html +=  (boxes[i].worth) + "₺"  + "<br>"
+      }
+      document.querySelector('.money1').innerHTML = html;
+    },
+
+    buildList2(boxes) {
+      var html = ""
+      for(let i=13; i<19; i++){
+      html +=  (boxes[i].worth) + "₺"  + "<br>"
+      }
+      document.querySelector('.money2').innerHTML = html;
+    },
+
+    buildList3(boxes) {
+      var html = ""
+      for(let i=19; i<24; i++){
+      html +=  (boxes[i].worth) + "₺"  + "<br>"
+      }
+      document.querySelector('.money3').innerHTML = html;
+    },
+
+
+    drawBoxes () {
+      document.querySelector('.remaining').innerHTML = '<br>' + 'remaining boxes: 24' + '<br>';
+      this.buildList(this.boxes);
+  },
+
+    openBox(boxes,boxName) {
+      var random = Math.floor(Math.random() * boxes.length);
+      this[boxName] = false;
+
+      if(boxes.length == 1){
+        document.querySelector('.remaining').innerHTML = 'out of box!';
+        alert('You just won '+ boxes[0].worth + ' !')
+      return;
+      }
+
+      document.querySelector('.remaining').innerHTML = "opened box's worth: " +  (boxes[random].worth) + "₺" + "<br>" + 'remaining boxes: ' + (24-this.counter);
+      
+      this.counter++;
+      boxes.splice(random,1);
+      this.buildList(boxes);
+
+      if(this.counter==6 || this.counter==11 || this.counter==16 || this.counter==20 || this.counter==23){
+        this.hamdiBey(boxes);
+      }
+      else{
+        document.querySelector('.offer').innerHTML = " ";
+      }
+    if(button===true){
+      button=false;
+    }
+
+    },
+
+
+  hamdiBey(boxes) {
+    this.hamdi = true;
+      var potential = 0;
+      var maxWorth = 0;
+      var offer = 0;
+      var i = 0;
+      for( i=0 ;i<boxes.length;i++){
+        potential += boxes[i].worth;
+        if(boxes[i].worth>maxWorth){
+          maxWorth = boxes[i].worth;
+        }
+      }
+      offer = ((maxWorth/(i+3))+(potential/100+i));
+      offer = offer/100
+      offer = parseInt(offer)
+      alert("Hamdi Bey Teklif yapıyor!")
+      document.querySelector('.offer').innerHTML = "Hamdi Bey's offer: " + parseInt(offer*100) + "₺"
+      + "<br>" + ""
+      
+  },
+
+  onReject() {
+    document.querySelector('.offer').innerHTML = "game continues!"
+    this.hamdi = false;
+  },
+
+  onAccept() {
+    document.querySelector('.offer').innerHTML = "Hayırlı olsun kral! <br> oyun bitti..."
+    this.hamdi = false;
+    document.querySelector('.boxes').innerHTML = ""
+    document.querySelector('.remaining').innerHTML = ""
+    document.querySelector('.box').innerHTML = ""
+  }
+
+  },
+  mounted() {
+    axios.get("http://localhost:3400/").then(response => {
+      this.boxes = response.data;
+      this.drawBoxes();
+    });
+  }
+}
+</script>
+
+<style>
+.low, .med, .high {
+  border: solid black;
+  width: 150px;
+  text-align: center;
+  margin: auto;
+}
+
+.low {
+  background-color: rgba(35, 226, 226, 0.925);
+  grid-area: a1; 
+}
+.med {
+  background-color: rgba(214, 214, 52, 0.877);
+  grid-area: a3;
+}
+.high {
+  background-color: rgb(202, 28, 28);
+  grid-area: b3;
+}
+
+.kutular{
+  grid-area: a2;
+}
+
+
+.grid-container {
+  display: grid;
+  grid-template-areas:
+    'a1 a2 a3'
+    'a1 b2 b3';
+  grid-gap: 10px;
+  padding: 10px;
+}
+.grid-container > div {
+  text-align: center;
+  padding: 15px;
+  font-size: 15px;
+}
+
+.offer {
+  grid-area: main;
+}
+.kutular1{
+  grid-area: header;
+}
+
+</style>
